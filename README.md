@@ -6,3 +6,12 @@ In fact, the very source of the words and characters will be from a pseudo-shake
 
 In effect, the random story that will be generated will be second-degree murder of the actual stories (sorry, not sorry).
 
+# Okay, why are you doing this?
+
+Uhmm... Coz I wasn't loved as a child. (Just kidding!)
+
+I'm currently upskilling my web dev skills and I think I have the fundamentals figured out and so I want to prove that to myself. 
+
+Additionally, coming from a data analytics background I think it'll be cool to show you guys that I have other skills sometimes (wink wink).
+
+#

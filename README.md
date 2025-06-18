@@ -63,3 +63,17 @@ These are probably the best places to store every instance of progress made on t
 ## A final note on skills
 
 The lists above are exhaustive and even within each of them there's other layers like data analytics within python and creation of functions and events within javascript. However, the skills highlighted show the high level knowledge and attributes that will have one at the least start with the project.
+
+# Project roadmap please
+
+This project has five main phases:
+
+1. Extract the speakers and their relevant speeches from the story.
+
+2. Create a transition matrix for speakers and one transition matrix for each speaker's speeches (the words thereof).
+
+3. Create an html webpage for generating a story at a click of a button (or buttons).
+
+4. Use results of transition matrices in an algorithm that generates random stories.
+
+5. Put it all together and test and update as needed.

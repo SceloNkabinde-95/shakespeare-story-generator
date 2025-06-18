@@ -86,4 +86,4 @@ In this phase we used the source as mentioned above (https://raw.githubuserconte
 
 This is done so the project's complexity especially when testing and validating is easier to track.
 
-By using this short form of the story, imported the .txt file into python as a list and then extracted the speakers and speeches accordingly. The final result is saved in a dataframe.
+By using this short form of the story, imported the .txt file into python as a list and then extracted the speakers and speeches accordingly. The final result is saved in a dataframe with an extra column for the the speeches without any punctuation so the creation of transition matrices for speeches is based solely on the words.

@@ -77,3 +77,13 @@ This project has five main phases:
 4. Use results of transition matrices in an algorithm that generates random stories.
 
 5. Put it all together and test and update as needed.
+
+# Detailing some important parts of the phases
+
+## Phase 1: Extract speakers and speeches
+
+In this phase we used the source as mentioned above (https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt.) but limited the story such that there are only 5 unique speakers in total by copying all the dialogue until before a 6th speaker appears.
+
+This is done so the project's complexity especially when testing and validating is easier to track.
+
+By using this short form of the story, imported the .txt file into python as a list and then extracted the speakers and speeches accordingly. The final result is saved in a dataframe.

@@ -78,7 +78,30 @@ This project has five main phases:
 
 5. Put it all together and test and update as needed.
 
-# Detailing some important parts of the phases
+# Summarizing the phases of the project
+
+## General Tools used
+
+Before giving quick summaries of the phases, here's a list of more tools used (in addition to the skills listed above)
+
+1. Visual Studio Code:
+
+This is the home of many developers, so I decided to adopt myself into it to make my life easier. Almost all my coding was done using this bad boy; even the terminal itself was accessed using this.
+
+2. Virtual environment for storing tech dependencies: 
+
+Yes I know this isn't a tool itself but it's one of those important components for creating a project that's easily adaptable by others. Additionally, it is where most of the other listed tools are stored.
+
+- In my project's folder, I simply booted up the terminal and used this command: python3 -m venv venv
+and it was created.
+
+3. Jupyter lab:
+
+Like I said before. I come from a very analytics-facing background and our main aim there was to get results to our stakeholders and bosses as quickly as possible so we let the developers take care of the other techy stuff most often. Therefore, I opted for Jupyter lab because it really does fit the purpose in data analytics more than in development. Besides, ever since I was introduced to python it's been my go to IDE, and so I've grown fond of it.
+
+- This was downloaded into the virtual environment via the command: pip3 install jupyterlab
+
+- So whenever I need to use python I simply activate the virtual environment inside the project's folder and run: jupyter lab
 
 ## Phase 1: Extract speakers and speeches
 
@@ -87,3 +110,4 @@ In this phase we used the source as mentioned above (https://raw.githubuserconte
 This is done so the project's complexity especially when testing and validating is easier to track.
 
 By using this short form of the story, imported the .txt file into python as a list and then extracted the speakers and speeches accordingly. The final result is saved in a dataframe with an extra column for the the speeches without any punctuation so the creation of transition matrices for speeches is based solely on the words.
+

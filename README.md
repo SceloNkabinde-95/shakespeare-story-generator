@@ -111,3 +111,13 @@ This is done so the project's complexity especially when testing and validating 
 
 By using this short form of the story, imported the .txt file into python as a list and then extracted the speakers and speeches accordingly. The final result is saved in a dataframe with an extra column for the the speeches without any punctuation so the creation of transition matrices for speeches is based solely on the words.
 
+## Phase 2: Create transition matrices
+
+Once we have the final story stored in a dataframe format, we're ready to cook.
+
+This phase kicks off with forming an algorithm that can take any list (a type of data in python) and dynamically determine the unique values therein before returning a transition matrix for probabilities of moving from one item in the list to another.
+
+We then follow this by storing the speakers' sequence of appearance, taken from phase one's results, in a list format and then run it through the transition matrix algorithm. The results of this is saved in a file named speaker_transition_matrix.csv.
+
+To end this phase we create one transition matrix for each speaker which is accomplished by first merging all the different speeches per speeker into one main list of speeches. Then we further combine the different speeches into an one itemed list of all the different speeches per speaker. This allows for creation of a list of all the words that for each speaker. Ultimately, we run these lists through the transition matrix algorithm. The results are stored in the files first_citizen_transition_matrix.csv, second_citizen_transition_matrix.csv, all_transition_matrix.csv, menenius_transition_matrix.csv, marcius_matrix.csv.
+

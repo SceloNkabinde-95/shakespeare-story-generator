@@ -6,6 +6,19 @@
 	<title>Shakespeare Story Generator</title>
 </head>
 <body>
+
+				<!-- let randomNumber2 = Math.floor(Math.random() * 5) + 1
+							if (randomNumber2 !== randomNumber1) {
+								speaker2.textContent = speakers[randomNumber2]
+							} -->
+
+			<!-- let randomNumber1 = Math.floor(Math.random() * 5) + 1 -->
+
+			<!-- const numbers = new Set();
+						while (numbers.size < 6) {
+							const randomNum = Math.floor(Math.random() * 5) + 1;
+							numbers.add(randomNum);
+						  } -->
 	<h1>Shakespeare Story Generator</h1>
 	<p>Let's generate a story for you</p>
 	<button>Generate Story</button>
@@ -27,5 +40,30 @@
 		<h3 class="speaker5"></h3>
 		<p class="speech5"></p>
 	</section>
+	<script>
+		const speaker1 = document.querySelector(".speaker1");
+		const speaker2 = document.querySelector(".speaker2");
+		const speaker3 = document.querySelector(".speaker3");
+		const speaker4 = document.querySelector(".speaker4");
+		const speaker5 = document.querySelector(".speaker5");
+
+		function generator() {
+
+			let speakers = ['All', 'First Citizen', 'Second Citizen', 'Menenius', 'Marcius']
+			
+			let random_array = [3,2,1,0,4];
+
+
+			speaker1.textContent = speakers[random_array[0]]
+			speaker2.textContent = speakers[random_array[1]]
+			speaker3.textContent = speakers[random_array[2]]
+			speaker4.textContent = speakers[random_array[3]]
+			speaker5.textContent = speakers[random_array[4]]
+			
+		}
+
+		const button = document.querySelector("button");
+		button.addEventListener('click', generator);
+	</script>
 </body>
 </html>

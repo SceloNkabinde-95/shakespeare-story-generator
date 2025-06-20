@@ -1,0 +1,23 @@
+{
+  "name": "shakespeare-story-generator",
+  "version": "1.0.0",
+  "description": "Well... the main goal of this project is to create a web page that generates random stories in a shakespeare esque format.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SceloNkabinde-95/shakespeare-story-generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SceloNkabinde-95/shakespeare-story-generator/issues"
+  },
+  "homepage": "https://github.com/SceloNkabinde-95/shakespeare-story-generator#readme",
+  "dependencies": {
+    "csv-parse": "^5.6.0"
+  }
+}

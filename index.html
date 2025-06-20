@@ -41,11 +41,51 @@
 		<p class="speech5"></p>
 	</section>
 	<script>
+
+		// declare variables from the main html
+
 		const speaker1 = document.querySelector(".speaker1");
 		const speaker2 = document.querySelector(".speaker2");
 		const speaker3 = document.querySelector(".speaker3");
 		const speaker4 = document.querySelector(".speaker4");
 		const speaker5 = document.querySelector(".speaker5");
+
+		// Create a function that takes in csv files with matrices in them.
+
+		async function loadMatrixFromCSV(filePath) {
+				try {
+					const response = await fetch(filePath);
+					if (!response.ok) throw new Error(`Failed to fetch ${filePath}`);
+					const csvText = await response.text();
+
+					const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
+					const data = parsed.data;
+
+					const matrix = data.slice(1).map(row =>
+						row.slice(1).map(cell => parseFloat(cell))
+					);
+
+					return matrix;
+				} catch (error) {
+					console.error(`❌ Error loading ${filePath}:`, error);
+					return null;
+				}
+			}
+
+		// Declare the matrices as variables
+
+		const speaker_transition_matrix = await loadMatrixFromCSV('speaker_transition_matrix.csv');
+
+		const all_transition_matrix = await loadMatrixFromCSV('all_transition_matrix.csv');
+
+		const first_citizen_transition_matrix = await loadMatrixFromCSV('first_citizen_transition_matrix.csv');
+
+		const second_citizen_transition_matrix = await loadMatrixFromCSV('second_citizen_transition_matrix.csv');
+
+		const menenius_transition_matrix = await loadMatrixFromCSV('menenius_transition_matrix.csv');
+
+		const marcius_transition_matrix = await loadMatrixFromCSV('marcius_transition_matrix.csv');
+
 
 		function generator() {
 

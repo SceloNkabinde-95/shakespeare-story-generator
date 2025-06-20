@@ -1,11 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>Load Multiple CSV Matrices</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
+
 <body>
-	
+	<h2>Loading CSV Matrices...</h2>
+
+	<script>
+		/**
+		 * Loads a matrix from a CSV file.
+		 * Assumes headers in row 0 and column 0.
+		 * Example CSV:
+		 * ,A,B,C
+		 * A,0.95,0.03,0.02
+		 * B,0.10,0.80,0.10
+		 * C,0.09,0.01,0.90
+		 */
+		async function loadMatrixFromCSV(filePath) {
+			try {
+				const response = await fetch(filePath);
+				if (!response.ok) throw new Error(`Failed to fetch ${filePath}`);
+				const csvText = await response.text();
+
+				const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
+				const data = parsed.data;
+
+				const matrix = data.slice(1).map(row =>
+					row.slice(1).map(cell => parseFloat(cell))
+				);
+
+				return matrix;
+			} catch (error) {
+				console.error(`❌ Error loading ${filePath}:`, error);
+				return null;
+			}
+		}
+
+		// ✅ Example usage:	
+
+		(async () => {
+			const matrixA = await loadMatrixFromCSV('speaker_transition_matrix.csv');
+			console.log("✅ Matrix A:", matrixA);
+
+			const matrixB = await loadMatrixFromCSV('all_transition_matrix.csv');
+			console.log("✅ Matrix B:", matrixB);
+
+			// Example: load another matrix
+			// const matrixB = await loadMatrixFromCSV('another_matrix.csv');
+			// console.log("✅ Matrix B:", matrixB);
+		})();
+	</script>
 </body>
+
 </html>

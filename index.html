@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Shakespeare Story Generator</title>
+
+	<!-- ✅ Include PapaParse library to fix ReferenceError: Papa is not defined -->
+	<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
+
 <body>
 
-				<!-- let randomNumber2 = Math.floor(Math.random() * 5) + 1
-							if (randomNumber2 !== randomNumber1) {
-								speaker2.textContent = speakers[randomNumber2]
-							} -->
+	<!-- let randomNumber2 = Math.floor(Math.random() * 5) + 1
+				if (randomNumber2 !== randomNumber1) {
+					speaker2.textContent = speakers[randomNumber2]
+				} -->
 
-			<!-- let randomNumber1 = Math.floor(Math.random() * 5) + 1 -->
+	<!-- let randomNumber1 = Math.floor(Math.random() * 5) + 1 -->
 
-			<!-- const numbers = new Set();
-						while (numbers.size < 6) {
-							const randomNum = Math.floor(Math.random() * 5) + 1;
-							numbers.add(randomNum);
-						  } -->
+	<!-- const numbers = new Set();
+			while (numbers.size < 6) {
+				const randomNum = Math.floor(Math.random() * 5) + 1;
+				numbers.add(randomNum);
+			  } -->
+
 	<h1>Shakespeare Story Generator</h1>
 	<p>Let's generate a story for you</p>
 	<button>Generate Story</button>
@@ -40,70 +46,150 @@
 		<h3 class="speaker5"></h3>
 		<p class="speech5"></p>
 	</section>
-	<script>
 
+	<script type="module">
 		// declare variables from the main html
-
 		const speaker1 = document.querySelector(".speaker1");
 		const speaker2 = document.querySelector(".speaker2");
 		const speaker3 = document.querySelector(".speaker3");
 		const speaker4 = document.querySelector(".speaker4");
 		const speaker5 = document.querySelector(".speaker5");
 
-		// Create a function that takes in csv files with matrices in them.
+		// Declare variables to use
+		let speakers = ['First Citizen', 'All', 'Second Citizen', 'Menenius', 'Marcius'];
 
+		// Create a function that takes in csv files with matrices in them and declare the transition matrix
 		async function loadMatrixFromCSV(filePath) {
-				try {
-					const response = await fetch(filePath);
-					if (!response.ok) throw new Error(`Failed to fetch ${filePath}`);
-					const csvText = await response.text();
+			try {
+				const response = await fetch(filePath);
+				if (!response.ok) throw new Error(`Failed to fetch ${filePath}`);
+				const csvText = await response.text();
 
-					const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
-					const data = parsed.data;
+				// ✅ Use PapaParse to parse CSV text
+				const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
+				const data = parsed.data;
 
-					const matrix = data.slice(1).map(row =>
-						row.slice(1).map(cell => parseFloat(cell))
-					);
+				// ✅ Remove row and column labels from matrix
+				const matrix = data.slice(1).map(row =>
+					row.slice(1).map(cell => parseFloat(cell))
+				);
 
-					return matrix;
-				} catch (error) {
-					console.error(`❌ Error loading ${filePath}:`, error);
-					return null;
+				return matrix;
+			} catch (error) {
+				console.error(`❌ Error loading ${filePath}:`, error);
+				return null;
+			}
+		}
+
+		// ✅ Function to simulate Markov chain using a transition matrix
+		function simulateMarkov(transitionMatrix, currState) {
+			const nextState = new Array(currState.length).fill(0);
+
+			for (let j = 0; j < transitionMatrix[0].length; j++) {
+				const stateHolder = new Array(currState.length).fill(0);
+
+				for (let i = 0; i < currState.length; i++) {
+					const calc = currState[i] * transitionMatrix[i][j];
+					stateHolder[i] = calc;
+				}
+
+				nextState[j] = stateHolder.reduce((a, b) => a + b, 0);
+			}
+
+			return nextState;
+		}
+
+		// ✅ Helper function to avoid repeats
+		function getMaxIndexExcluding(nextState, noRepeat) {
+			let maxVal = -Infinity;
+			let maxIndex = -1;
+
+			for (let i = 0; i < nextState.length; i++) {
+				if (!noRepeat.includes(i) && nextState[i] > maxVal) {
+					maxVal = nextState[i];
+					maxIndex = i;
 				}
 			}
 
-		// Declare the matrices as variables
-
-		const speaker_transition_matrix = await loadMatrixFromCSV('speaker_transition_matrix.csv');
-
-		const all_transition_matrix = await loadMatrixFromCSV('all_transition_matrix.csv');
-
-		const first_citizen_transition_matrix = await loadMatrixFromCSV('first_citizen_transition_matrix.csv');
-
-		const second_citizen_transition_matrix = await loadMatrixFromCSV('second_citizen_transition_matrix.csv');
-
-		const menenius_transition_matrix = await loadMatrixFromCSV('menenius_transition_matrix.csv');
-
-		const marcius_transition_matrix = await loadMatrixFromCSV('marcius_transition_matrix.csv');
-
-
-		function generator() {
-
-			let speakers = ['All', 'First Citizen', 'Second Citizen', 'Menenius', 'Marcius']
-			
-			let random_array = [3,2,1,0,4];
-
-
-			speaker1.textContent = speakers[random_array[0]]
-			speaker2.textContent = speakers[random_array[1]]
-			speaker3.textContent = speakers[random_array[2]]
-			speaker4.textContent = speakers[random_array[3]]
-			speaker5.textContent = speakers[random_array[4]]
-			
+			return maxIndex;
 		}
 
+		// ✅ Generate sequence of speakers using the transition matrix
+		function generator(speaker_transition_matrix) {
+			let item_not_repeat = [];
+			let sequence_speakers = [];
+
+			// iteration 1:
+
+			//step 1: get the first speaker
+			let speaker = Math.floor(Math.random() * 5);
+			item_not_repeat[0] = speaker;
+
+			sequence_speakers[0] = speakers[speaker];
+
+			//step2: make an array for initial current state
+			let current_state = Array(5).fill(0);
+			current_state[speaker] = 1;
+
+			//step3: apply the transition matrix to get the next state
+			let next_state = simulateMarkov(speaker_transition_matrix, current_state);
+
+			//step4: get the next position from the next_state
+			speaker = getMaxIndexExcluding(next_state, item_not_repeat);
+
+			// iterations 2 to 4
+			let count = 1;
+			const maxSteps = 4;
+
+			while (count < maxSteps && speaker !== -1) {
+				//step1: Update the no repeat index list and get next speaker
+				item_not_repeat[count] = speaker;
+
+				sequence_speakers[count] = speakers[speaker];
+
+				//step2: update current state as previous next state:
+				current_state = next_state;
+
+				//step3: apply transition matrix to get the next state
+				next_state = simulateMarkov(speaker_transition_matrix, current_state);
+
+				//step4: get the next position from the next_state
+				speaker = getMaxIndexExcluding(next_state, item_not_repeat);
+
+				//step5: update the counter
+				count += 1;
+			}
+
+			//iteration 5
+
+			//update the sequence of speakers with the remaining name that's not on the list
+			const missing = speakers.find(item => !sequence_speakers.includes(item));
+
+			if (missing !== undefined) {
+				sequence_speakers.push(missing);
+			}
+
+			// ✅ Update speaker tags with generated sequence
+			speaker1.textContent = sequence_speakers[0];
+			speaker2.textContent = sequence_speakers[1];
+			speaker3.textContent = sequence_speakers[2];
+			speaker4.textContent = sequence_speakers[3];
+			speaker5.textContent = sequence_speakers[4];
+		}
+
+		// ✅ Load matrix once user clicks the button and trigger generation
 		const button = document.querySelector("button");
-		button.addEventListener('click', generator);
+
+		button.addEventListener('click', async () => {
+			const speaker_transition_matrix = await loadMatrixFromCSV('speaker_transition_matrix.csv');
+			if (!speaker_transition_matrix) {
+				console.error("Matrix not loaded. Aborting.");
+				return;
+			}
+
+			generator(speaker_transition_matrix);
+		});
 	</script>
 </body>
+
 </html>

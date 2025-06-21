@@ -106,21 +106,41 @@
 
 		 //step 1: get the first speaker
 		 
-		 const first_speaker = Math.floor(Math.random() * 5);
-		 item_not_repeat[0] = first_speaker;
+		 let speaker = Math.floor(Math.random() * 5);
+		 item_not_repeat[0] = speaker;
 
-		 sequence_speakers[0] = speakers[first_speaker];
+		 sequence_speakers[0] = speakers[speaker];
 
 		 //step2: make an array for initial current state
 		 let current_state = Array(5).fill(0);
-		 current_state[first_speaker] = 1;
+		 current_state[speaker] = 1;
 
 		 //step3: apply the transition matrix to get the next state
 
 		 let next_state = simulateMarkov(speaker_transition_matrix, current_state);
 
-		 
-		 console.log(first_speaker);
+		 //step4: get the next position from the next_state
+
+		function getMaxIndexExcluding(nextState, noRepeat) {
+			let maxVal = -Infinity;
+			let maxIndex = -1;
+
+			for (let i = 0; i < nextState.length; i++) {
+				if (!noRepeat.includes(i) && nextState[i] > maxVal) {
+					maxVal = nextState[i];
+					maxIndex = i;
+				}
+			}
+
+			return maxIndex;
+		
+		}
+
+		//update index of next speaker
+		speaker = getMaxIndexExcluding(next_state,item_not_repeat);
+
+
+		 console.log(speaker);
 		 console.log(item_not_repeat);
 		 console.log(sequence_speakers);
 		 console.log(current_state);

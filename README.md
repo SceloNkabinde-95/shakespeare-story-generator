@@ -18,7 +18,7 @@ Additionally, coming from a data analytics background I think it'll be cool to s
 
 I don't like to toot my own horn but I know I'm the best :)
 
-(Takes a Zoolander serious face pose): I was inspired by the cjallenge on https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Silly_story_generator#starting_point as I kept learning about Javascript and I thought "Wait a minute. I also recall using Markov Chains to create predictions in my other life, so why not use that to generate the stories of the great Shakespeare."
+(Takes a Zoolander serious face pose): I was inspired by the challenge on https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Silly_story_generator#starting_point as I kept learning about Javascript and I thought "Wait a minute. I also recall using Markov Chains to create predictions in my other life, so why not use that to generate the stories of the great Shakespeare."
 
 At that point I came across Pushpendra Singh's similar Markov Chain's project found here https://medium.com/@pushpendrasinghcod/text-generation-from-shakespeare-play-using-markov-chains-eee5bfcbb7a0, and then I knew that this has to be done. My hands are tied now, so here we go!
 
@@ -107,9 +107,9 @@ Like I said before. I come from a very analytics-facing background and our main 
 
 In this phase we used the source as mentioned above (https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt.) but limited the story such that there are only 5 unique speakers in total by copying all the dialogue until before a 6th speaker appears.
 
-This is done so the project's complexity especially when testing and validating is easier to track.
+This is done so the project's complexity - especially when testing and validating - is easier to track.
 
-By using this short form of the story, imported the .txt file into python as a list and then extracted the speakers and speeches accordingly. The final result is saved in a dataframe with an extra column for the the speeches without any punctuation so the creation of transition matrices for speeches is based solely on the words.
+By using this short form of the story, I imported the .txt file into python as a list and then extracted the speakers and speeches accordingly. The final result is saved in a dataframe with an extra column for the the speeches without any punctuation so the creation of transition matrices for speeches is based solely on the words.
 
 ## Phase 2: Create transition matrices
 
@@ -119,5 +119,5 @@ This phase kicks off with forming an algorithm that can take any list (a type of
 
 We then follow this by storing the speakers' sequence of appearance, taken from phase one's results, in a list format and then run it through the transition matrix algorithm. The results of this is saved in a file named speaker_transition_matrix.csv.
 
-To end this phase we create one transition matrix for each speaker which is accomplished by first merging all the different speeches per speeker into one main list of speeches. Then we further combine the different speeches into an one itemed list of all the different speeches per speaker. This allows for creation of a list of all the words that for each speaker. Ultimately, we run these lists through the transition matrix algorithm. The results are stored in the files first_citizen_transition_matrix.csv, second_citizen_transition_matrix.csv, all_transition_matrix.csv, menenius_transition_matrix.csv, marcius_matrix.csv.
+To end this phase we create one transition matrix for each speaker which is accomplished by first merging all the different speeches per speaker into one main list of speeches. Then we further combine the different speeches into an one itemed list of all the different speeches per speaker. This allows for creation of a list of all the words for each speaker. Ultimately, we run these lists through the transition matrix algorithm. The results are stored in the files first_citizen_transition_matrix.csv, second_citizen_transition_matrix.csv, all_transition_matrix.csv, menenius_transition_matrix.csv, marcius_matrix.csv.
 

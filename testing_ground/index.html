@@ -140,12 +140,45 @@
 		speaker = getMaxIndexExcluding(next_state,item_not_repeat);
 
 
-		 console.log(speaker);
-		 console.log(item_not_repeat);
+		// iterations 2 to 3
+
+		let count = 1;
+		const maxSteps = 4;
+
+		while (count < maxSteps && speaker !== -1) {
+
+			//step1: Update the no repeat index list and get next speaker
+			item_not_repeat[count] = speaker;
+
+			sequence_speakers[count] = speakers[speaker];
+
+			//step2: update current state as previous next state:
+			current_state = next_state;
+
+			//step3: apply transition matrix to get the next state
+			next_state = simulateMarkov(speaker_transition_matrix, current_state);
+
+			//step4: get the next position from the next_state
+			speaker = getMaxIndexExcluding(next_state, item_not_repeat);
+
+			//step5: update the counter
+			count += 1;
+
+		}
+
+		//iteration 4
+
+		//update the sequence of speakers with the remaining name that's not on the list
+
+		// Find the item in speakers that's not in x
+		const missing = speakers.find(item => !sequence_speakers.includes(item));
+
+		if (missing !== undefined) {
+			sequence_speakers.push(missing);
+		}
+
+		 console.log(speakers);
 		 console.log(sequence_speakers);
-		 console.log(current_state);
-		 console.log(speaker_transition_matrix);
-		 console.log(next_state);
 
 	</script>
 </body>

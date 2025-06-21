@@ -30,8 +30,12 @@
 		 
 		 let sequence_speakers = [];
 
+		 let lengthOfArr = speakers.length;
+
+		while (lengthOfArr > 1) {
+
 		 // step1: Generate a random number from 0 to 4
-		 let randomNumber = Math.floor(Math.random() * 5);
+		 let randomNumber = Math.floor(Math.random() * lengthOfArr);
 
 		 // step2: Pick a speaker from the speakers list using the random number
 		 sequence_speakers[0] = speakers[randomNumber];
@@ -40,7 +44,12 @@
 		 //step3: update the speakers list to only have remaining guys and then repeat the steps:
 
 		speakers.splice(randomNumber,1);
-		
+		console.log(speakers)
+
+		//step4: update the length so the random number can adjust accordingly
+		lengthOfArr = speakers.length;
+
+		}
 
 	</script>
 </body>

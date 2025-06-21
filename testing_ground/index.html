@@ -48,7 +48,7 @@
 
 
 
-	<script>
+	<script type="module">
 
 		// Declare variables to use
 		 let speakers = ['First Citizen', 'All', 'Second Citizen', 'Menenius', 'Marcius'];
@@ -57,7 +57,29 @@
 
 		 let item_not_repeat = [];
 
-		 const transitionMatrix1 = [[0.95, 0.03, 0.02], [0.10, 0.80, 0.10], [0.09, 0.01, 0.90]];
+		// Create a function that takes in csv files with matrices in them and declare the transition matrix
+
+		async function loadMatrixFromCSV(filePath) {
+			try {
+				const response = await fetch(filePath);
+				if (!response.ok) throw new Error(`Failed to fetch ${filePath}`);
+				const csvText = await response.text();
+
+				const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
+				const data = parsed.data;
+
+				const matrix = data.slice(1).map(row =>
+					row.slice(1).map(cell => parseFloat(cell))
+				);
+
+				return matrix;
+			} catch (error) {
+				console.error(`❌ Error loading ${filePath}:`, error);
+				return null;
+			}
+		}
+
+		const speaker_transition_matrix = await loadMatrixFromCSV('speaker_transition_matrix.csv');
 
 
 		 // Set up the algorithm to apply the markov chain:
@@ -84,28 +106,25 @@
 
 		 //step 1: get the first speaker
 		 
-		 const first_speaker = 0;
-		 Math.floor(Math.random() * 5);
+		 const first_speaker = Math.floor(Math.random() * 5);
 		 item_not_repeat[0] = first_speaker;
 
 		 sequence_speakers[0] = speakers[first_speaker];
 
 		 //step2: make an array for initial current state
-		 //let current_state = Array(5).fill(0);
-		 //current_state[first_speaker] = 1;
+		 let current_state = Array(5).fill(0);
+		 current_state[first_speaker] = 1;
 
 		 //step3: apply the transition matrix to get the next state
 
-			const current_state = [950, 30, 20];
-
-		 let next_state = simulateMarkov(transitionMatrix1, current_state);
+		 let next_state = simulateMarkov(speaker_transition_matrix, current_state);
 
 		 
 		 console.log(first_speaker);
 		 console.log(item_not_repeat);
 		 console.log(sequence_speakers);
 		 console.log(current_state);
-		 console.log(transitionMatrix1);
+		 console.log(speaker_transition_matrix);
 		 console.log(next_state);
 
 	</script>

@@ -57,25 +57,38 @@
 
 		 let item_not_repeat = [];
 
-		 const transitionMatrix = [[0.95, 0.03, 0.02], [0.10, 0.80, 0.10], [0.09, 0.01, 0.90]];
+		 const transitionMatrix1 = [[0.95, 0.03, 0.02], [0.10, 0.80, 0.10], [0.09, 0.01, 0.90]];
 
 
 		 // Set up the algorithm to apply the markov chain:
-		 function simulateMarkov(transitionMatrix,curr_state) {
+		 function simulateMarkov(transitionMatrix, currState) {
 
-			for
-		 }
+			const nextState = new Array(currState.length).fill(0);
+
+			for (let j = 0; j < transitionMatrix[0].length; j++) {
+				const stateHolder = new Array(currState.length).fill(0);
+
+				for (let i = 0; i < currState.length; i++) {
+					const calc = currState[i] * transitionMatrix[i][j];
+					stateHolder[i] = calc;
+				}
+
+				nextState[j] = stateHolder.reduce((a, b) => a + b, 0);
+			}
+
+			return nextState;
+		}
 		
 
 		 // iteration 1:
 
 		 //step 1: get the first speaker
 		 
-		 //const first_speaker = 0;
-		 //Math.floor(Math.random() * 5);
-		 //item_not_repeat[0] = first_speaker;
+		 const first_speaker = 0;
+		 Math.floor(Math.random() * 5);
+		 item_not_repeat[0] = first_speaker;
 
-		 //sequence_speakers[0] = speakers[first_speaker];
+		 sequence_speakers[0] = speakers[first_speaker];
 
 		 //step2: make an array for initial current state
 		 //let current_state = Array(5).fill(0);
@@ -83,11 +96,17 @@
 
 		 //step3: apply the transition matrix to get the next state
 
+			const current_state = [950, 30, 20];
+
+		 let next_state = simulateMarkov(transitionMatrix1, current_state);
+
 		 
-		 //console.log(first_speaker);
-		 //console.log(item_not_repeat);
-		 //console.log(sequence_speakers);
-		 //console.log(current_state);
+		 console.log(first_speaker);
+		 console.log(item_not_repeat);
+		 console.log(sequence_speakers);
+		 console.log(current_state);
+		 console.log(transitionMatrix1);
+		 console.log(next_state);
 
 	</script>
 </body>

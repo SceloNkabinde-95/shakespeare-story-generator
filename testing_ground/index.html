@@ -10,44 +10,32 @@
 <body>
 	<h2>Loading CSV Matrices...</h2>
 
+	<!-- function simulateMarkov(transitionMatrix, initialState, steps) {
+	let result = [initialState];
+	
+	for (let step = 0; step < steps; step++) { const prevState=result[result.length - 1]; const nextState=[0, 0, 0]; for
+		(let to=0; to < 3; to++) { for (let from=0; from < 3; from++) { nextState[to] +=prevState[from] *
+		transitionMatrix[from][to]; } } result.push(nextState); } return result; } const transitionMatrix=[ [0.95, 0.03,
+		0.02], [0.10, 0.80, 0.10], [0.09, 0.01, 0.90] ]; const initialState=[1000, 0, 0]; // Initial volumes in A, B, C
+		const steps=5; const simulationResult=simulateMarkov(transitionMatrix, initialState, steps); // Display results
+		simulationResult.forEach((state, i)=> {
+		console.log(`Step ${i}: A=${state[0].toFixed(2)}, B=${state[1].toFixed(2)}, C=${state[2].toFixed(2)}`);
+		}); -->
+
+
 	<script>
 
-		function simulateMarkov(transitionMatrix, initialState, steps) {
-				let result = [initialState];
-
-				for (let step = 0; step < steps; step++) {
-					const prevState = result[result.length - 1];
-					const nextState = [0, 0, 0];
-
-					for (let to = 0; to < 3; to++) {
-						for (let from = 0; from < 3; from++) {
-							nextState[to] += prevState[from] * transitionMatrix[from][to];
-						}
-					}
-
-					result.push(nextState);
-				}
-
-				return result;
-			}
-
-			const transitionMatrix = [
-					[0.95, 0.03, 0.02],
-					[0.10, 0.80, 0.10],
-					[0.09, 0.01, 0.90]
-				];
-
-				const initialState = [1000, 0, 0];  // Initial volumes in A, B, C
-
-				const steps = 5;
-				const simulationResult = simulateMarkov(transitionMatrix, initialState, steps);
-
-				// Display results
-				simulationResult.forEach((state, i) => {
-					console.log(`Step ${i}: A=${state[0].toFixed(2)}, B=${state[1].toFixed(2)}, C=${state[2].toFixed(2)}`);
-				});
 		  
-		  
+		 let speakers = ['All', 'First Citizen', 'Second Citizen', 'Menenius', 'Marcius'];
+		 
+		 let sequence_speakers = [];
+
+		 // step1: Generate a random number from 0 to 4
+		 let randomNumber = Math.floor(Math.random() * 5);
+
+		 // step2: Pick a speaker from the speakers list using the random number
+		 sequence_speakers[0] = speakers[randomNumber];
+		 console.log(sequence_speakers);
 
 
 	</script>

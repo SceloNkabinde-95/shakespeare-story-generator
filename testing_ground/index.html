@@ -11,48 +11,45 @@
 	<h2>Loading CSV Matrices...</h2>
 
 	<script>
-		/**
-		 * Loads a matrix from a CSV file.
-		 * Assumes headers in row 0 and column 0.
-		 * Example CSV:
-		 * ,A,B,C
-		 * A,0.95,0.03,0.02
-		 * B,0.10,0.80,0.10
-		 * C,0.09,0.01,0.90
-		 */
-		async function loadMatrixFromCSV(filePath) {
-			try {
-				const response = await fetch(filePath);
-				if (!response.ok) throw new Error(`Failed to fetch ${filePath}`);
-				const csvText = await response.text();
 
-				const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
-				const data = parsed.data;
+		function simulateMarkov(transitionMatrix, initialState, steps) {
+				let result = [initialState];
 
-				const matrix = data.slice(1).map(row =>
-					row.slice(1).map(cell => parseFloat(cell))
-				);
+				for (let step = 0; step < steps; step++) {
+					const prevState = result[result.length - 1];
+					const nextState = [0, 0, 0];
 
-				return matrix;
-			} catch (error) {
-				console.error(`❌ Error loading ${filePath}:`, error);
-				return null;
+					for (let to = 0; to < 3; to++) {
+						for (let from = 0; from < 3; from++) {
+							nextState[to] += prevState[from] * transitionMatrix[from][to];
+						}
+					}
+
+					result.push(nextState);
+				}
+
+				return result;
 			}
-		}
 
-		// ✅ Example usage:	
+			const transitionMatrix = [
+					[0.95, 0.03, 0.02],
+					[0.10, 0.80, 0.10],
+					[0.09, 0.01, 0.90]
+				];
 
-		(async () => {
-			const matrixA = await loadMatrixFromCSV('speaker_transition_matrix.csv');
-			console.log("✅ Matrix A:", matrixA);
+				const initialState = [1000, 0, 0];  // Initial volumes in A, B, C
 
-			const matrixB = await loadMatrixFromCSV('all_transition_matrix.csv');
-			console.log("✅ Matrix B:", matrixB);
+				const steps = 5;
+				const simulationResult = simulateMarkov(transitionMatrix, initialState, steps);
 
-			// Example: load another matrix
-			// const matrixB = await loadMatrixFromCSV('another_matrix.csv');
-			// console.log("✅ Matrix B:", matrixB);
-		})();
+				// Display results
+				simulationResult.forEach((state, i) => {
+					console.log(`Step ${i}: A=${state[0].toFixed(2)}, B=${state[1].toFixed(2)}, C=${state[2].toFixed(2)}`);
+				});
+		  
+		  
+
+
 	</script>
 </body>
 

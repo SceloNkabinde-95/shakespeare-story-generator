@@ -51,7 +51,7 @@
 	<script>
 
 		// Declare variables to use
-		 let speakers = ['All', 'First Citizen', 'Second Citizen', 'Menenius', 'Marcius'];
+		 let speakers = ['First Citizen', 'All', 'Second Citizen', 'Menenius', 'Marcius'];
 		 
 		 let sequence_speakers = [];
 
@@ -61,14 +61,20 @@
 
 		 //step 1: get the first speaker
 		 
-		 const first_speaker = Math.floor(Math.random() * 5);
+		 const first_speaker = 0;
+		 //Math.floor(Math.random() * 5);
 		 item_not_repeat[0] = first_speaker;
 
 		 sequence_speakers[0] = speakers[first_speaker];
 
+		 //step2: make an array for initial current state
+		 let current_state = Array(5).fill(0);
+		 current_state[first_speaker] = 1;
+		 
 		 console.log(first_speaker);
 		 console.log(item_not_repeat);
 		 console.log(sequence_speakers);
+		 console.log(current_state);
 
 	</script>
 </body>

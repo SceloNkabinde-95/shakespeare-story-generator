@@ -21,38 +21,54 @@
 		simulationResult.forEach((state, i)=> {
 		console.log(`Step ${i}: A=${state[0].toFixed(2)}, B=${state[1].toFixed(2)}, C=${state[2].toFixed(2)}`);
 		}); -->
+<!-- 
+		let lengthOfArr = speakers.length;
+		
+		while (lengthOfArr > 1) {
+		
+		// step1: Generate a random number from 0 to 4
+		let randomNumber = Math.floor(Math.random() * lengthOfArr);
+		
+		// step2: Pick a speaker from the speakers list using the random number
+		sequence_speakers[randomNumber] = speakers[randomNumber];
+		console.log(sequence_speakers);
+		
+		//step3: update the speakers list to only have remaining guys and then repeat the steps:
+		
+		speakers.splice(randomNumber,1);
+		
+		//step4: update the length so the random number can adjust accordingly
+		lengthOfArr = speakers.length;
+		
+		}
+		
+		//step5: append the final speaker into the lisr
+		sequence_speakers.push(...speakers);
+		console.log(sequence_speakers) -->
+
 
 
 	<script>
 
-		  
+		// Declare variables to use
 		 let speakers = ['All', 'First Citizen', 'Second Citizen', 'Menenius', 'Marcius'];
 		 
 		 let sequence_speakers = [];
 
-		 let lengthOfArr = speakers.length;
+		 let item_not_repeat = [];
 
-		while (lengthOfArr > 1) {
+		 // iteration 1:
 
-		 // step1: Generate a random number from 0 to 4
-		 let randomNumber = Math.floor(Math.random() * lengthOfArr);
+		 //step 1: get the first speaker
+		 
+		 const first_speaker = Math.floor(Math.random() * 5);
+		 item_not_repeat[0] = first_speaker;
 
-		 // step2: Pick a speaker from the speakers list using the random number
-		 sequence_speakers[randomNumber] = speakers[randomNumber];
+		 sequence_speakers[0] = speakers[first_speaker];
+
+		 console.log(first_speaker);
+		 console.log(item_not_repeat);
 		 console.log(sequence_speakers);
-
-		 //step3: update the speakers list to only have remaining guys and then repeat the steps:
-
-		speakers.splice(randomNumber,1);
-
-		//step4: update the length so the random number can adjust accordingly
-		lengthOfArr = speakers.length;
-
-		}
-
-		//step5: append the final speaker into the lisr
-		sequence_speakers.push(...speakers);
-		console.log(sequence_speakers)
 
 	</script>
 </body>

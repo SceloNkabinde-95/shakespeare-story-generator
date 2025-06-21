@@ -38,18 +38,21 @@
 		 let randomNumber = Math.floor(Math.random() * lengthOfArr);
 
 		 // step2: Pick a speaker from the speakers list using the random number
-		 sequence_speakers[0] = speakers[randomNumber];
+		 sequence_speakers[randomNumber] = speakers[randomNumber];
 		 console.log(sequence_speakers);
 
 		 //step3: update the speakers list to only have remaining guys and then repeat the steps:
 
 		speakers.splice(randomNumber,1);
-		console.log(speakers)
 
 		//step4: update the length so the random number can adjust accordingly
 		lengthOfArr = speakers.length;
 
 		}
+
+		//step5: append the final speaker into the lisr
+		sequence_speakers.push(...speakers);
+		console.log(sequence_speakers)
 
 	</script>
 </body>

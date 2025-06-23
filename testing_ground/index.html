@@ -300,21 +300,23 @@
 		sequence_speech[0] = all_speech_list[word];
 
 		//step2: make an array for initial current state
+		console.log(all_speech_list.length);
+
 		let current_state = Array(all_speech_list.length).fill(0);
 		current_state[word] = 1;
 
 		//step3: apply the transition matrix to get the next state
-		//let next_state = simulateMarkov(all_transition_matrix, current_state);
+		let next_state = simulateMarkov(all_transition_matrix, current_state);
 
 		//step4: get the next position from the next_state
 		//word = getMaxIndexExcluding(next_state, item_not_repeat);
 
 		
 		console.log(speech_length);
-		console.log(word);
+		console.log(current_state[word]);
 		console.log(sequence_speech);
 		console.log(current_state);
-		console.log(all_transition_matrix);		
+		console.log(all_transition_matrix[0]);		
 
 	</script>
 </body>

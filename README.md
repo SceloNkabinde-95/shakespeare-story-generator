@@ -135,8 +135,6 @@ It is pertinent to note that the results of this phase are what we display as th
 
 ### How the markov chain process works
 
-## Markov Chain Weather Example
-
 Before diving into the summary of this phase, here's an example of how the Markov chain process works:
 
 Consider that we have three possible weather states that each day can have — **Sunny**, **Rainy**, and **Windy**. Suppose the probability of the weather changing from one state to another from one day to the next is defined as follows:
@@ -148,19 +146,17 @@ If the current state is **Sunny**:
 
 This can be written as:
 
-           To
-        Sunny  Rainy  Windy
-From
-Sunny   [0.6,   0.3,   0.1]
+| State | Sunny | Rainy | Windy |
+| --- | ----- | ----- | ----- |
+| Sunny   | 0.60  | 0.30  | 0.10  |
 
 In fact, we can represent all transition probabilities in a matrix as follows:
 
-           To
-        Sunny  Rainy  Windy
-From
-Sunny   [0.6,   0.3,   0.1]
-Rainy   [0.2,   0.5,   0.3]
-Windy   [0.3,   0.3,   0.4]
+| State | Sunny | Rainy | Windy |
+| --- | ----- | ----- | ----- |
+| Sunny   | 0.60  | 0.30  | 0.10  |
+| Rainy   | 0.20  | 0.50  | 0.30  |
+| Windy   | 0.30  | 0.30  | 0.40  |
 
 Where:
 
@@ -168,14 +164,14 @@ Rows represent the current state
 
 Columns represent the next state
 
-Example: Forecasting 3 Days
+###### Example: Forecasting 3 Days
 Let’s assume that Day 0 is definitely Sunny.
 
-Step 1: Setup the initial state vector (Day 1)
+###### Step 1: Setup the initial state vector (Day 1)
 
 [S, R, W] = [1, 0, 0]
 
-Step 2: Calculate the probabilities for Day 2
+###### Step 2: Calculate the probabilities for Day 2
 
 Sunny = 1×0.6 + 0×0.2 + 0×0.3 = 0.6
 Rainy = 1×0.3 + 0×0.5 + 0×0.3 = 0.3
@@ -183,7 +179,7 @@ Windy = 1×0.1 + 0×0.3 + 0×0.4 = 0.1
 
 New state: [0.6, 0.3, 0.1]
 
-Step 3: Calculate the probabilities for Day 3
+###### Step 3: Calculate the probabilities for Day 3
 
 Sunny = 0.6×0.6 + 0.3×0.2 + 0.1×0.3 = 0.45
 Rainy = 0.6×0.3 + 0.3×0.5 + 0.1×0.3 = 0.36
@@ -191,7 +187,7 @@ Windy = 0.6×0.1 + 0.3×0.3 + 0.1×0.4 = 0.19
 
 New state: [0.45, 0.36, 0.19]
 
-Summary
+###### Summary
 
 | Day | Sunny | Rainy | Windy |
 | --- | ----- | ----- | ----- |

@@ -192,6 +192,13 @@
 				} -->
 
 
+
+
+
+<!-- 
+		 -->
+
+
 	<script type="module">
 
 	// Create a function that takes in csv files with matrices in them and declare the transition matrix
@@ -290,6 +297,17 @@
 		let item_not_repeat = [];
 
 
+		if (speech_length === 1) {
+
+			//step 1: get the first word from the list of words
+			let word = Math.floor(Math.random() * all_speech_list.length);
+			item_not_repeat[0] = word;
+
+			sequence_speech[0] = all_speech_list[word];
+
+		}
+		
+		else if (speech_length === 2) {
 
 		// iteration 1:
 
@@ -300,8 +318,6 @@
 		sequence_speech[0] = all_speech_list[word];
 
 		//step2: make an array for initial current state
-		console.log(all_speech_list.length);
-
 		let current_state = Array(all_speech_list.length).fill(0);
 		current_state[word] = 1;
 
@@ -309,14 +325,69 @@
 		let next_state = simulateMarkov(all_transition_matrix, current_state);
 
 		//step4: get the next position from the next_state
-		//word = getMaxIndexExcluding(next_state, item_not_repeat);
+		word = getMaxIndexExcluding(next_state, item_not_repeat);
+
+		// iteration 2:
+
+		sequence_speech[1] = all_speech_list[word];
+
+		}
+
+		else if (speech_length > 2) {
+
+			// iteration 1:
+
+			//step 1: get the first word from the list of words
+			let word = Math.floor(Math.random() * all_speech_list.length);
+			item_not_repeat[0] = word;
+
+			sequence_speech[0] = all_speech_list[word];
+
+			//step2: make an array for initial current state
+			let current_state = Array(all_speech_list.length).fill(0);
+			current_state[word] = 1;
+
+			//step3: apply the transition matrix to get the next state
+			let next_state = simulateMarkov(all_transition_matrix, current_state);
+
+			//step4: get the next position from the next_state
+			word = getMaxIndexExcluding(next_state, item_not_repeat);
+
+
+			// iterations 2 to final length of speach
+			let count = 1;
+			const maxSteps = speech_length;
+
+			while (count < maxSteps && word !== -1) { 
+
+				//step1: Update the no repeat index list and get next word
+				item_not_repeat[count] = word; 
+				sequence_speech[count] = all_speech_list[word]; 
+				
+				//step2: update current state as previous next state: 
+				current_state = next_state; 
+				
+				//step3: apply transition matrix to get the next state
+				next_state = simulateMarkov(all_transition_matrix, current_state); 
+				
+				//step4: get the next position from the next_state
+				word = getMaxIndexExcluding(next_state, item_not_repeat);
+
+				 //step5: update the counter 
+				 count +=1; 
+			} 
+		}
 
 		
-		console.log(speech_length);
-		console.log(current_state[word]);
+		// save the speech into one sentence
+		const all_speech = [sequence_speech.join(" ")];
+
+		//console.log(speech_length);
+		//console.log(current_state[word]);
 		console.log(sequence_speech);
-		console.log(current_state);
-		console.log(all_transition_matrix[0]);		
+		console.log(all_speech);
+		//console.log(current_state);
+		//console.log(all_transition_matrix[0]);		
 
 	</script>
 </body>

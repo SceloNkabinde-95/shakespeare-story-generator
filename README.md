@@ -148,10 +148,11 @@ If the current state is **Sunny**:
 
 This can be written as:
 
-```text
-[Sunny, Rainy, Windy]
-[Sunny]  [0.6,   0.3,   0.1]
-```
+           To
+        Sunny  Rainy  Windy
+From
+Sunny   [0.6,   0.3,   0.1]
+
 In fact, we can represent all transition probabilities in a matrix as follows:
 
            To
@@ -170,11 +171,11 @@ Columns represent the next state
 Example: Forecasting 3 Days
 Let’s assume that Day 0 is definitely Sunny.
 
-Step 1: Setup the initial state vector
+Step 1: Setup the initial state vector (Day 1)
 
 [S, R, W] = [1, 0, 0]
 
-Step 2: Calculate the probabilities for Day 1
+Step 2: Calculate the probabilities for Day 2
 
 Sunny = 1×0.6 + 0×0.2 + 0×0.3 = 0.6
 Rainy = 1×0.3 + 0×0.5 + 0×0.3 = 0.3
@@ -182,13 +183,21 @@ Windy = 1×0.1 + 0×0.3 + 0×0.4 = 0.1
 
 New state: [0.6, 0.3, 0.1]
 
+Step 3: Calculate the probabilities for Day 3
+
+Sunny = 0.6×0.6 + 0.3×0.2 + 0.1×0.3 = 0.45
+Rainy = 0.6×0.3 + 0.3×0.5 + 0.1×0.3 = 0.36
+Windy = 0.6×0.1 + 0.3×0.3 + 0.1×0.4 = 0.19
+
+New state: [0.45, 0.36, 0.19]
+
 Summary
 
 | Day | Sunny | Rainy | Windy |
 | --- | ----- | ----- | ----- |
-| 0   | 1.00  | 0.00  | 0.00  |
-| 1   | 0.60  | 0.30  | 0.10  |
-| 2   | 0.45  | 0.36  | 0.19  |
+| 1   | 1.00  | 0.00  | 0.00  |
+| 2   | 0.60  | 0.30  | 0.10  |
+| 3   | 0.45  | 0.36  | 0.19  |
 
 This process of computing the next state based on current probabilities and a fixed transition matrix is called the Markov Chain Process. We apply this iterative approach across both stages of our model.
 

@@ -115,7 +115,7 @@
 		}
 
 		// Generate sequence of speakers using the transition matrix
-		function generator(speaker_transition_matrix) {
+		function speaker_generator(speaker_transition_matrix) {
 			let item_not_repeat = [];
 			let sequence_speakers = new Array(speakers.length).fill("")
 
@@ -194,7 +194,7 @@
 				return;
 			}
 
-			generator(speaker_transition_matrix);
+			speaker_generator(speaker_transition_matrix);
 		});
 	</script>
 </body>

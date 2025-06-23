@@ -202,7 +202,7 @@ This process of computing the next state based on current probabilities and a fi
 
 The algorithm in this stage uses the transition matrix speaker_transition_matrix.csv to determine what the probability to move from one speaker to another is.
 
-By using a random number between 1 and 5 to pick out the first speaker in the list of the speakers (where First Citizen correlates with 1, All correlates with 2, Second Citizen correlates with 3, Menenius correlates with 4, Marcius correlates with 5) we determine the probabilities to move to the next speaker and then pick the speaker with the highest probability as the next speaker. Thereafter we repeat the process while ensuring that we don't pick anyone who was picked before - we do this until we've exhausted the list.
+By using a random number between 1 and 5 to pick out the first speaker in the list of the speakers (where First Citizen correlates with 1, All correlates with 2, Second Citizen correlates with 3, Menenius correlates with 4, Marcius correlates with 5) we determine the probabilities to move to the next speaker and then pick the speaker with the highest probability as the next speaker in the same way as the example above. Thereafter we repeat the process while ensuring that we don't pick anyone who was picked before - we do this until we've exhausted the list.
 
 
 

@@ -121,3 +121,9 @@ We then follow this by storing the speakers' sequence of appearance, taken from 
 
 To end this phase we create one transition matrix for each speaker which is accomplished by first merging all the different speeches per speaker into one main list of speeches. Then we further combine the different speeches into an one itemed list of all the different speeches per speaker. This allows for creation of a list of all the words that for each speaker. Ultimately, we run these lists through the transition matrix algorithm. The results are stored in the files first_citizen_transition_matrix.csv, second_citizen_transition_matrix.csv, all_transition_matrix.csv, menenius_transition_matrix.csv, marcius_matrix.csv.
 
+## Phase 3: Create a HTML webpage
+
+In this phase, we create a rudimentary html webpage that has the simple html boilerplate structure and then we populate it with a title, placeholders for where the generated story's five speakers and their related speeches will be placed, and a button that will run the algorithm to generate the story upon clicking.
+
+Our aim here is not to give a beautiful looking webpage at this stage, but only to ensure that the main functionalities of creating a randomly generated story on a webpage works. In a later state we will enhance the webpage so it's easy on the eyes.
+

@@ -217,6 +217,24 @@
 			}
 		}
 
+		// Create a function that parses csv files
+			async function loadCSV(filePath) {
+				try {
+					const response = await fetch(filePath);
+					if (!response.ok) throw new Error(`Failed to fetch ${filePath}`);
+					const csvText = await response.text();
+
+					// Use PapaParse to parse CSV text
+					const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
+					const data = parsed.data;
+
+					return data;
+				} catch (error) {
+					console.error(`❌ Error loading ${filePath}:`, error);
+					return null;
+				}
+		}
+
 		// Function to simulate Markov chain using a transition matrix
 		function simulateMarkov(transitionMatrix, currState) {
 			const nextState = new Array(currState.length).fill(0);
@@ -254,8 +272,13 @@
 
 		const all_word_count = await loadMatrixFromCSV('all_word_count.csv');
 
+		let all_speech_list = await loadCSV('all_speech_list.csv');
+		// Select from 2nd row onward (index 1) and only the 2nd column (index 1)
+		all_speech_list = all_speech_list.slice(1).map(row => row[1]);
+
 		console.log(all_transition_matrix);
-		console.log(all_word_count);				
+		console.log(all_word_count);
+		console.log(all_speech_list);				
 
 	</script>
 </body>

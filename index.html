@@ -119,17 +119,16 @@
 			let item_not_repeat = [];
 			let sequence_speakers = new Array(speakers.length).fill("")
 
-
 			// iteration 1:
 
 			//step 1: get the first speaker
-			let speaker = Math.floor(Math.random() * 5);
+			let speaker = Math.floor(Math.random() * speakers.length);
 			item_not_repeat[0] = speaker;
 
 			sequence_speakers[0] = speakers[speaker];
 
 			//step2: make an array for initial current state
-			let current_state = Array(5).fill(0);
+			let current_state = Array(speakers.length).fill(0);
 			current_state[speaker] = 1;
 
 			//step3: apply the transition matrix to get the next state
@@ -163,12 +162,19 @@
 
 			//iteration final
 
-			//update the sequence of speakers with the remaining name that's not on the list
+			//define the item not in the sequence list but in speakers list
 			const missing = speakers.find(item => !sequence_speakers.includes(item));
 
-			if (missing !== undefined) {
-				sequence_speakers.push(missing);
-			}
+			//find the index where there's a missing name in the sequence
+			let emptyIndex;
+			sequence_speakers.forEach((value, index) => {
+				if (value === '') {
+					emptyIndex = index;
+				}
+			});
+
+			//update the sequence with the missing speaker
+			sequence_speakers[emptyIndex] = missing;
 
 			// Update speaker tags with generated sequence
 			speaker1.textContent = sequence_speakers[0];

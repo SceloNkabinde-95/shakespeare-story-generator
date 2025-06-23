@@ -115,6 +115,24 @@
 			}
 		}
 
+		// Create a function that parses csv files
+			async function loadCSV(filePath) {
+				try {
+					const response = await fetch(filePath);
+					if (!response.ok) throw new Error(`Failed to fetch ${filePath}`);
+					const csvText = await response.text();
+
+					// Use PapaParse to parse CSV text
+					const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
+					const data = parsed.data;
+
+					return data;
+				} catch (error) {
+					console.error(`❌ Error loading ${filePath}:`, error);
+					return null;
+				}
+		}
+
 		// Function to simulate Markov chain using a transition matrix
 		function simulateMarkov(transitionMatrix, currState) {
 			const nextState = new Array(currState.length).fill(0);
@@ -147,6 +165,158 @@
 
 			return maxIndex;
 		}
+
+		// Import speakers' csv files
+		const all_transition_matrix = await loadMatrixFromCSV('all_transition_matrix.csv');
+
+		const all_word_count = await loadMatrixFromCSV('all_word_count.csv');
+
+		let all_speech_list = await loadCSV('all_speech_list.csv');
+		// Select from 2nd row onward (index 1) and only the 2nd column (index 1)
+		all_speech_list = all_speech_list.slice(1).map(row => row[1]);
+
+
+		const first_citizen_transition_matrix = await loadMatrixFromCSV('first_citizen_transition_matrix.csv');
+
+		const first_citizen_word_count = await loadMatrixFromCSV('first_citizen_word_count.csv');
+
+		let first_citizen_speech_list = await loadCSV('first_citizen_speech_list.csv');
+		// Select from 2nd row onward (index 1) and only the 2nd column (index 1)
+		first_citizen_speech_list = first_citizen_speech_list.slice(1).map(row => row[1]);
+
+
+		const second_citizen_transition_matrix = await loadMatrixFromCSV('second_citizen_transition_matrix.csv');
+
+		const second_citizen_word_count = await loadMatrixFromCSV('second_citizen_word_count.csv');
+
+		let second_citizen_speech_list = await loadCSV('second_citizen_speech_list.csv');
+		// Select from 2nd row onward (index 1) and only the 2nd column (index 1)
+		second_citizen_speech_list = second_citizen_speech_list.slice(1).map(row => row[1]);
+
+
+		const menenius_transition_matrix = await loadMatrixFromCSV('menenius_transition_matrix.csv');
+
+		const menenius_word_count = await loadMatrixFromCSV('menenius_word_count.csv');
+
+		let menenius_speech_list = await loadCSV('menenius_speech_list.csv');
+		// Select from 2nd row onward (index 1) and only the 2nd column (index 1)
+		menenius_speech_list = menenius_speech_list.slice(1).map(row => row[1]);
+
+
+		const marcius_transition_matrix = await loadMatrixFromCSV('marcius_transition_matrix.csv');
+
+		const marcius_word_count = await loadMatrixFromCSV('marcius_word_count.csv');
+
+		let marcius_speech_list = await loadCSV('marcius_speech_list.csv');
+		// Select from 2nd row onward (index 1) and only the 2nd column (index 1)
+		marcius_speech_list = marcius_speech_list.slice(1).map(row => row[1]);
+
+
+		// Speech generator function
+		function speech_Generator(transitionMatrix, wordCount, speechList) {
+
+				//Choose the speech's length (how many number of words) at random by using the word count of the speaker's speeches saved in all_word_count
+
+				let speech_length_selector = Math.floor(Math.random() * wordCount.length);
+				// Now the number of iterations will be speech_length
+				let speech_length = wordCount[speech_length_selector];
+
+				//Declare the list to hold the generated words
+				let sequence_speech = new Array(speech_length).fill("")
+
+				//Declare a variable to store repeated indexes of words
+				let item_not_repeat = [];
+
+
+				if (speech_length === 1) {
+
+					//step 1: get the first word from the list of words
+					let word = Math.floor(Math.random() * speechList.length);
+					item_not_repeat[0] = word;
+
+					sequence_speech[0] = speechList[word];
+
+				}
+
+				else if (speech_length === 2) {
+
+					// iteration 1:
+
+					//step 1: get the first word from the list of words
+					let word = Math.floor(Math.random() * speechList.length);
+					item_not_repeat[0] = word;
+
+					sequence_speech[0] = speechList[word];
+
+					//step2: make an array for initial current state
+					let current_state = Array(speechList.length).fill(0);
+					current_state[word] = 1;
+
+					//step3: apply the transition matrix to get the next state
+					let next_state = simulateMarkov(transitionMatrix, current_state);
+
+					//step4: get the next position from the next_state
+					word = getMaxIndexExcluding(next_state, item_not_repeat);
+
+					// iteration 2:
+
+					sequence_speech[1] = speechList[word];
+
+				}
+
+				else if (speech_length > 2) {
+
+					// iteration 1:
+
+					//step 1: get the first word from the list of words
+					let word = Math.floor(Math.random() * speechList.length);
+					item_not_repeat[0] = word;
+
+					sequence_speech[0] = speechList[word];
+
+					//step2: make an array for initial current state
+					let current_state = Array(speechList.length).fill(0);
+					current_state[word] = 1;
+
+					//step3: apply the transition matrix to get the next state
+					let next_state = simulateMarkov(transitionMatrix, current_state);
+
+					//step4: get the next position from the next_state
+					word = getMaxIndexExcluding(next_state, item_not_repeat);
+
+
+					// iterations 2 to final length of speach
+					let count = 1;
+					const maxSteps = speech_length;
+
+					while (count < maxSteps && word !== -1) {
+
+						//step1: Update the no repeat index list and get next word
+						item_not_repeat[count] = word;
+						sequence_speech[count] = speechList[word];
+
+						//step2: update current state as previous next state: 
+						current_state = next_state;
+
+						//step3: apply transition matrix to get the next state
+						next_state = simulateMarkov(transitionMatrix, current_state);
+
+						//step4: get the next position from the next_state
+						word = getMaxIndexExcluding(next_state, item_not_repeat);
+
+						//step5: update the counter 
+						count += 1;
+					}
+				}
+
+
+				// save the speech into one sentence
+				const speech = [sequence_speech.join(" ")];
+
+				return speech;
+
+			}
+
 
 		// Generate sequence of speakers using the transition matrix
 		function speaker_generator(speaker_transition_matrix) {
@@ -216,6 +386,35 @@
 			speaker3.textContent = sequence_speakers[2];
 			speaker4.textContent = sequence_speakers[3];
 			speaker5.textContent = sequence_speakers[4];
+
+
+			let speeches = new Array(5).fill("");
+
+			for (let i = 0; i < sequence_speakers.length; i++) {
+				if (sequence_speakers[i] === 'All') {
+					speeches[i] = speech_Generator(all_transition_matrix, all_word_count, all_speech_list);
+				}
+				else if (sequence_speakers[i] === 'First Citizen') {
+					speeches[i] = speech_Generator(first_citizen_transition_matrix, first_citizen_word_count, first_citizen_speech_list)
+				}
+				else if (sequence_speakers[i] === 'Second Citizen') {
+					speeches[i] = speech_Generator(second_citizen_transition_matrix, second_citizen_word_count, second_citizen_speech_list);
+				}
+				else if (sequence_speakers[i] === 'Menenius') {
+					speeches[i] = speech_Generator(menenius_transition_matrix, menenius_word_count, menenius_speech_list);
+				}
+				else if (sequence_speakers[i] === 'Marcius') {
+					speeches[i] = speech_Generator(marcius_transition_matrix, marcius_word_count, marcius_speech_list);
+				}
+			}
+
+			// Update speech tags with generated speeches
+			speech1.textContent = speeches[0];
+			speech2.textContent = speeches[1];
+			speech3.textContent = speeches[2];
+			speech4.textContent = speeches[3];
+			speech5.textContent = speeches[4];
+			
 		}
 
 		// Load matrix once user clicks the button and trigger generation

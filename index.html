@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Shakespeare Story Generator</title>
 
-	<!-- ✅ Include PapaParse library to fix ReferenceError: Papa is not defined -->
+	<!-- Include PapaParse library to fix ReferenceError: Papa is not defined -->
 	<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </head>
 
@@ -65,11 +65,11 @@
 				if (!response.ok) throw new Error(`Failed to fetch ${filePath}`);
 				const csvText = await response.text();
 
-				// ✅ Use PapaParse to parse CSV text
+				// Use PapaParse to parse CSV text
 				const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
 				const data = parsed.data;
 
-				// ✅ Remove row and column labels from matrix
+				//Remove row and column labels from matrix
 				const matrix = data.slice(1).map(row =>
 					row.slice(1).map(cell => parseFloat(cell))
 				);
@@ -81,7 +81,7 @@
 			}
 		}
 
-		// ✅ Function to simulate Markov chain using a transition matrix
+		// Function to simulate Markov chain using a transition matrix
 		function simulateMarkov(transitionMatrix, currState) {
 			const nextState = new Array(currState.length).fill(0);
 
@@ -99,7 +99,7 @@
 			return nextState;
 		}
 
-		// ✅ Helper function to avoid repeats
+		// Helper function to avoid repeats
 		function getMaxIndexExcluding(nextState, noRepeat) {
 			let maxVal = -Infinity;
 			let maxIndex = -1;
@@ -114,10 +114,11 @@
 			return maxIndex;
 		}
 
-		// ✅ Generate sequence of speakers using the transition matrix
+		// Generate sequence of speakers using the transition matrix
 		function generator(speaker_transition_matrix) {
 			let item_not_repeat = [];
-			let sequence_speakers = [];
+			let sequence_speakers = new Array(speakers.length).fill("")
+
 
 			// iteration 1:
 
@@ -137,9 +138,9 @@
 			//step4: get the next position from the next_state
 			speaker = getMaxIndexExcluding(next_state, item_not_repeat);
 
-			// iterations 2 to 4
+			// iterations 2 to speaker's list length minus 1
 			let count = 1;
-			const maxSteps = 4;
+			const maxSteps = speakers.length - 1;
 
 			while (count < maxSteps && speaker !== -1) {
 				//step1: Update the no repeat index list and get next speaker
@@ -160,7 +161,7 @@
 				count += 1;
 			}
 
-			//iteration 5
+			//iteration final
 
 			//update the sequence of speakers with the remaining name that's not on the list
 			const missing = speakers.find(item => !sequence_speakers.includes(item));
@@ -169,7 +170,7 @@
 				sequence_speakers.push(missing);
 			}
 
-			// ✅ Update speaker tags with generated sequence
+			// Update speaker tags with generated sequence
 			speaker1.textContent = sequence_speakers[0];
 			speaker2.textContent = sequence_speakers[1];
 			speaker3.textContent = sequence_speakers[2];
@@ -177,7 +178,7 @@
 			speaker5.textContent = sequence_speakers[4];
 		}
 
-		// ✅ Load matrix once user clicks the button and trigger generation
+		// Load matrix once user clicks the button and trigger generation
 		const button = document.querySelector("button");
 
 		button.addEventListener('click', async () => {

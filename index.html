@@ -25,6 +25,34 @@
 				numbers.add(randomNum);
 			  } -->
 
+
+<!-- 
+			// convert names of speakers to what's identifiable by the csv files
+			let speaker_now;
+			
+			if (speaker_name.includes(['All','Menenius','Marcius'])) {
+			speaker_now = speaker_name.toLowerCase();
+			}
+			else if (speaker_name === "First Citizen") {
+			speaker_now = "first_citizen"
+			}
+			
+			else if (speaker_name === "Second Citizen") {
+			speaker_now = "second_citizen"
+			}
+			
+			// import the transition matrix and the word count files
+			let speaker_now_tm_file = `${speaker_now}_transition_matrix.csv`
+			let speaker_now_wc_file = `${speaker_now}_word_count.csv`
+			
+			const speaker_now_tm = await loadMatrixFromCSV('speaker_now_tm_file.csv');			   -->
+
+
+
+
+
+
+
 	<h1>Shakespeare Story Generator</h1>
 	<p>Let's generate a story for you</p>
 	<button>Generate Story</button>

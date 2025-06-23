@@ -52,15 +52,7 @@
 		
 		
 
-		
-
-
-				} -->
-
-
-	<script type="module">
-
-			// Declare variables to use
+					// Declare variables to use
 			let speakers = ['First Citizen', 'All', 'Second Citizen', 'Menenius', 'Marcius'];
 
 			// Create a function that takes in csv files with matrices in them and declare the transition matrix
@@ -195,6 +187,93 @@
 		 //console.log(current_state);
 		 //console.log(next_state);
 
+
+
+				} -->
+
+
+	<script type="module">
+
+				// Generate speech per speaker (doing it for All only)
+				function speech_generator(speech_transition_matrix, speech_words, speech_word_count) {
+
+
+
+					let item_not_repeat = [];
+
+					//Randomly select a number to determine speech length
+					let speechLength = Math.floor(Math.random() * speech_word_count.length);
+
+					speechLength = speech_word_count[speechLength]
+
+					//make length of array that holds the length of speech length
+
+					let sequence_words = new Array(speechLength).fill("")
+
+					// iteration 1:
+
+					//step 1: get the first word
+					let word = Math.floor(Math.random() * speech_words.length);
+					item_not_repeat[0] = word;
+
+					sequence_words[0] = speech_words[word];
+
+					//step2: make an array for initial current state
+					let current_state = Array(sequence_words.length).fill(0);
+					current_state[speaker] = 1;
+
+					//step3: apply the transition matrix to get the next state
+					let next_state = simulateMarkov(speaker_transition_matrix, current_state);
+
+					//step4: get the next position from the next_state
+					speaker = getMaxIndexExcluding(next_state, item_not_repeat);
+
+					// iterations 2 to speaker's list length minus 1
+					let count = 1;
+					const maxSteps = speakers.length - 1;
+
+					while (count < maxSteps && speaker !== -1) {
+						//step1: Update the no repeat index list and get next speaker
+						item_not_repeat[count] = speaker;
+
+						sequence_speakers[count] = speakers[speaker];
+
+						//step2: update current state as previous next state:
+						current_state = next_state;
+
+						//step3: apply transition matrix to get the next state
+						next_state = simulateMarkov(speaker_transition_matrix, current_state);
+
+						//step4: get the next position from the next_state
+						speaker = getMaxIndexExcluding(next_state, item_not_repeat);
+
+						//step5: update the counter
+						count += 1;
+					}
+
+					//iteration final
+
+					//define the item not in the sequence list but in speakers list
+					const missing = speakers.find(item => !sequence_speakers.includes(item));
+
+					//find the index where there's a missing name in the sequence
+					let emptyIndex;
+					sequence_speakers.forEach((value, index) => {
+						if (value === '') {
+							emptyIndex = index;
+						}
+					});
+
+					//update the sequence with the missing speaker
+					sequence_speakers[emptyIndex] = missing;
+
+					// Update speaker tags with generated sequence
+					speaker1.textContent = sequence_speakers[0];
+					speaker2.textContent = sequence_speakers[1];
+					speaker3.textContent = sequence_speakers[2];
+					speaker4.textContent = sequence_speakers[3];
+					speaker5.textContent = sequence_speakers[4];
+				}
 
 	</script>
 </body>

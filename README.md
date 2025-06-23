@@ -127,3 +127,62 @@ In this phase, we create a rudimentary html webpage that has the simple html boi
 
 Our aim here is not to give a beautiful looking webpage at this stage, but only to ensure that the main functionalities of creating a randomly generated story on a webpage works. In a later state we will enhance the webpage so it's easy on the eyes.
 
+## Phase 4: Apply the markov chain to generate the story
+
+Generating a random story with five speakers using the markov chain has two stages to it - the first being the generation of the sequence of speakers, and the second is the generation of the appropriate and most probable speech by each speaker.
+
+It is pertinent to note that the results of this phase are what we display as the story on the webpage. Thus, we use javascript to program these.
+
+### How the markov chain process works
+
+Before diving into the summary of this phase, here's an example of how the markov chain process works:
+
+Consider that we have three possible states of the weather each day can have - Sunny, Rainy, and Windy - and then consider that the probability for the weather state to change from Sunny to Sunny from one day to the next is 60%, from Sunny to Rainy is 30%, and from Sunny to Windy is 10%. Then we can draw up a list of probabilities of moving from Sunny to other states of the weather as
+
+		[Sunny, Rainy, Windy]
+[Sunny] [60%  ,   30%, 10%]
+
+In fact, this can be expanded if we have the general probabilities of moving from any of the three states into the next from one day to another by using a transition matrix as as this:
+
+           To
+        S    R    W
+From S [0.6, 0.3, 0.1]
+     R [0.2, 0.5, 0.3]
+     W [0.3, 0.3, 0.4]
+
+where S is for Sunny, R is for Rainy, and W is for Windy.
+
+Now if we were guaranteed that if the a specific day is Sunny, we can calculate the probability of the day being Sunny, Rainy, or Windy for as many other days to come as possible, but if we were to limit this to just three days we can calculate this in the following manner:
+
+Step 1: Setup the current state's list:
+
+[S,R,W] -> [1,0,0]
+
+Step 2: Calculate the probabilities for the second day:
+
+The probability that it's Sunny is: 1*0.6 + 0*0.2 + 0*0.3 = 0.6
+The probability that it's Rainy is: 1*0.3 + 0*0.5 + 0*0.3 = 0.3
+The probability that it's Windy is: 1*0.1 + 0*0.3 + 0*0.4 = 0.1
+
+Therefore the new current state is now [S,R,W] = [0.6,0.3,0.1]
+
+Step 3: Calculate the probabilities for the third day:
+
+The probability that it's Sunny is:  0.6*0.6 + 0.3*0.2 + 0.1*0.3 = 0.45
+The probability that it's Rainy is: 0.6*0.3 + 0.3*0.5 + 0.1*0.3 = 0.36
+The probability that it's Windy is: 0.6*0.1 + 0.3*0.3 + 0.1*0.4 = 0.19
+
+Therefore the new current state is now [S,R,W] = [0.45,0.35,0.19]
+
+This process process of calculating the iterative probabilities is called the markov chain process, and we apply it in both our stages.
+
+### Phase 4 Stage 1: Getting the sequence of the speakers
+
+The algorithm in this stage uses the transition matrix speaker_transition_matrix.csv to determine what the probability to move from one speaker to another is.
+
+By using a random number between 1 and 5 to pick out the first speaker in the list of the speakers (where First Citizen correlates with 1, All correlates with 2, Second Citizen correlates with 3, Menenius correlates with 4, Marcius correlates with 5) we determine the probabilities to move to the next speaker and then pick the speaker with the highest probability as the next speaker. Thereafter we repeat the process while ensuring that we don't pick anyone who was picked before - we do this until we've exhausted the list.
+
+
+
+
+

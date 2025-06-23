@@ -276,9 +276,45 @@
 		// Select from 2nd row onward (index 1) and only the 2nd column (index 1)
 		all_speech_list = all_speech_list.slice(1).map(row => row[1]);
 
-		console.log(all_transition_matrix);
-		console.log(all_word_count);
-		console.log(all_speech_list);				
+
+		//Choose the speech's length (how many number of words) at random by using the word count of the speaker's speeches saved in all_word_count
+
+		let speech_length_selector = Math.floor(Math.random() * all_word_count.length);
+		// Now the number of iterations will be speech_length
+		let speech_length = all_word_count[speech_length_selector];
+
+		//Declare the list to hold the generated words
+		let sequence_speech = new Array(speech_length).fill("")
+
+		//Declare a variable to store repeated indexes of words
+		let item_not_repeat = [];
+
+
+
+		// iteration 1:
+
+		//step 1: get the first word from the list of words
+		let word = Math.floor(Math.random() * all_speech_list.length);
+		item_not_repeat[0] = word;
+
+		sequence_speech[0] = all_speech_list[word];
+
+		//step2: make an array for initial current state
+		let current_state = Array(all_speech_list.length).fill(0);
+		current_state[word] = 1;
+
+		//step3: apply the transition matrix to get the next state
+		//let next_state = simulateMarkov(all_transition_matrix, current_state);
+
+		//step4: get the next position from the next_state
+		//word = getMaxIndexExcluding(next_state, item_not_repeat);
+
+		
+		console.log(speech_length);
+		console.log(word);
+		console.log(sequence_speech);
+		console.log(current_state);
+		console.log(all_transition_matrix);		
 
 	</script>
 </body>

@@ -194,86 +194,68 @@
 
 	<script type="module">
 
-				// Generate speech per speaker (doing it for All only)
-				function speech_generator(speech_transition_matrix, speech_words, speech_word_count) {
+	// Create a function that takes in csv files with matrices in them and declare the transition matrix
+		async function loadMatrixFromCSV(filePath) {
+			try {
+				const response = await fetch(filePath);
+				if (!response.ok) throw new Error(`Failed to fetch ${filePath}`);
+				const csvText = await response.text();
 
+				// Use PapaParse to parse CSV text
+				const parsed = Papa.parse(csvText.trim(), { skipEmptyLines: true });
+				const data = parsed.data;
 
+				//Remove row and column labels from matrix
+				const matrix = data.slice(1).map(row =>
+					row.slice(1).map(cell => parseFloat(cell))
+				);
 
-					let item_not_repeat = [];
+				return matrix;
+			} catch (error) {
+				console.error(`❌ Error loading ${filePath}:`, error);
+				return null;
+			}
+		}
 
-					//Randomly select a number to determine speech length
-					let speechLength = Math.floor(Math.random() * speech_word_count.length);
+		// Function to simulate Markov chain using a transition matrix
+		function simulateMarkov(transitionMatrix, currState) {
+			const nextState = new Array(currState.length).fill(0);
 
-					speechLength = speech_word_count[speechLength]
+			for (let j = 0; j < transitionMatrix[0].length; j++) {
+				const stateHolder = new Array(currState.length).fill(0);
 
-					//make length of array that holds the length of speech length
-
-					let sequence_words = new Array(speechLength).fill("")
-
-					// iteration 1:
-
-					//step 1: get the first word
-					let word = Math.floor(Math.random() * speech_words.length);
-					item_not_repeat[0] = word;
-
-					sequence_words[0] = speech_words[word];
-
-					//step2: make an array for initial current state
-					let current_state = Array(sequence_words.length).fill(0);
-					current_state[speaker] = 1;
-
-					//step3: apply the transition matrix to get the next state
-					let next_state = simulateMarkov(speaker_transition_matrix, current_state);
-
-					//step4: get the next position from the next_state
-					speaker = getMaxIndexExcluding(next_state, item_not_repeat);
-
-					// iterations 2 to speaker's list length minus 1
-					let count = 1;
-					const maxSteps = speakers.length - 1;
-
-					while (count < maxSteps && speaker !== -1) {
-						//step1: Update the no repeat index list and get next speaker
-						item_not_repeat[count] = speaker;
-
-						sequence_speakers[count] = speakers[speaker];
-
-						//step2: update current state as previous next state:
-						current_state = next_state;
-
-						//step3: apply transition matrix to get the next state
-						next_state = simulateMarkov(speaker_transition_matrix, current_state);
-
-						//step4: get the next position from the next_state
-						speaker = getMaxIndexExcluding(next_state, item_not_repeat);
-
-						//step5: update the counter
-						count += 1;
-					}
-
-					//iteration final
-
-					//define the item not in the sequence list but in speakers list
-					const missing = speakers.find(item => !sequence_speakers.includes(item));
-
-					//find the index where there's a missing name in the sequence
-					let emptyIndex;
-					sequence_speakers.forEach((value, index) => {
-						if (value === '') {
-							emptyIndex = index;
-						}
-					});
-
-					//update the sequence with the missing speaker
-					sequence_speakers[emptyIndex] = missing;
-
-					// Update speaker tags with generated sequence
-					speaker1.textContent = sequence_speakers[0];
-					speaker2.textContent = sequence_speakers[1];
-					speaker3.textContent = sequence_speakers[2];
-					speaker4.textContent = sequence_speakers[3];
-					speaker5.textContent = sequence_speakers[4];
+				for (let i = 0; i < currState.length; i++) {
+					const calc = currState[i] * transitionMatrix[i][j];
+					stateHolder[i] = calc;
 				}
+
+				nextState[j] = stateHolder.reduce((a, b) => a + b, 0);
+			}
+
+			return nextState;
+		}
+
+		// Helper function to avoid repeats
+		function getMaxIndexExcluding(nextState, noRepeat) {
+			let maxVal = -Infinity;
+			let maxIndex = -1;
+
+			for (let i = 0; i < nextState.length; i++) {
+				if (!noRepeat.includes(i) && nextState[i] > maxVal) {
+					maxVal = nextState[i];
+					maxIndex = i;
+				}
+			}
+
+			return maxIndex;
+		}
+
+		const all_transition_matrix = await loadMatrixFromCSV('all_transition_matrix.csv');
+
+		const all_word_count = await loadMatrixFromCSV('all_word_count.csv');
+
+		console.log(all_transition_matrix);
+		console.log(all_word_count);				
 
 	</script>
 </body>

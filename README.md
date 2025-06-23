@@ -135,46 +135,63 @@ It is pertinent to note that the results of this phase are what we display as th
 
 ### How the markov chain process works
 
-Before diving into the summary of this phase, here's an example of how the markov chain process works:
+## Markov Chain Weather Example
 
-Consider that we have three possible states of the weather each day can have - Sunny, Rainy, and Windy - and then consider that the probability for the weather state to change from Sunny to Sunny from one day to the next is 60%, from Sunny to Rainy is 30%, and from Sunny to Windy is 10%. Then we can draw up a list of probabilities of moving from Sunny to other states of the weather as
+Before diving into the summary of this phase, here's an example of how the Markov chain process works:
 
-		[Sunny, Rainy, Windy]
-[Sunny] [60%  ,   30%, 10%]
+Consider that we have three possible weather states that each day can have — **Sunny**, **Rainy**, and **Windy**. Suppose the probability of the weather changing from one state to another from one day to the next is defined as follows:
 
-In fact, this can be expanded if we have the general probabilities of moving from any of the three states into the next from one day to another by using a transition matrix as as this:
+If the current state is **Sunny**:
+- Probability of staying **Sunny** = 60%
+- Probability of changing to **Rainy** = 30%
+- Probability of changing to **Windy** = 10%
+
+This can be written as:
+
+```text
+[Sunny, Rainy, Windy]
+[Sunny]  [0.6,   0.3,   0.1]
+```
+In fact, we can represent all transition probabilities in a matrix as follows:
 
            To
-        S    R    W
-From S [0.6, 0.3, 0.1]
-     R [0.2, 0.5, 0.3]
-     W [0.3, 0.3, 0.4]
+        Sunny  Rainy  Windy
+From
+Sunny   [0.6,   0.3,   0.1]
+Rainy   [0.2,   0.5,   0.3]
+Windy   [0.3,   0.3,   0.4]
 
-where S is for Sunny, R is for Rainy, and W is for Windy.
+Where:
 
-Now if we were guaranteed that if the a specific day is Sunny, we can calculate the probability of the day being Sunny, Rainy, or Windy for as many other days to come as possible, but if we were to limit this to just three days we can calculate this in the following manner:
+Rows represent the current state
 
-Step 1: Setup the current state's list:
+Columns represent the next state
 
-[S,R,W] -> [1,0,0]
+Example: Forecasting 3 Days
+Let’s assume that Day 0 is definitely Sunny.
 
-Step 2: Calculate the probabilities for the second day:
+Step 1: Setup the initial state vector
 
-The probability that it's Sunny is: 1*0.6 + 0*0.2 + 0*0.3 = 0.6
-The probability that it's Rainy is: 1*0.3 + 0*0.5 + 0*0.3 = 0.3
-The probability that it's Windy is: 1*0.1 + 0*0.3 + 0*0.4 = 0.1
+[S, R, W] = [1, 0, 0]
 
-Therefore the new current state is now [S,R,W] = [0.6,0.3,0.1]
+Step 2: Calculate the probabilities for Day 1
 
-Step 3: Calculate the probabilities for the third day:
+Sunny = 1×0.6 + 0×0.2 + 0×0.3 = 0.6
+Rainy = 1×0.3 + 0×0.5 + 0×0.3 = 0.3
+Windy = 1×0.1 + 0×0.3 + 0×0.4 = 0.1
 
-The probability that it's Sunny is:  0.6*0.6 + 0.3*0.2 + 0.1*0.3 = 0.45
-The probability that it's Rainy is: 0.6*0.3 + 0.3*0.5 + 0.1*0.3 = 0.36
-The probability that it's Windy is: 0.6*0.1 + 0.3*0.3 + 0.1*0.4 = 0.19
+New state: [0.6, 0.3, 0.1]
 
-Therefore the new current state is now [S,R,W] = [0.45,0.35,0.19]
+Summary
 
-This process process of calculating the iterative probabilities is called the markov chain process, and we apply it in both our stages.
+| Day | Sunny | Rainy | Windy |
+| --- | ----- | ----- | ----- |
+| 0   | 1.00  | 0.00  | 0.00  |
+| 1   | 0.60  | 0.30  | 0.10  |
+| 2   | 0.45  | 0.36  | 0.19  |
+
+This process of computing the next state based on current probabilities and a fixed transition matrix is called the Markov Chain Process. We apply this iterative approach across both stages of our model.
+
 
 ### Phase 4 Stage 1: Getting the sequence of the speakers
 

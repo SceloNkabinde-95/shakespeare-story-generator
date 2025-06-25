@@ -2,23 +2,21 @@
 
 Well... the main goal of this project is to create a web page that generates random stories in a shakespeare esque format. 
 
-In fact, the very source of the words and characters will be from a pseudo-shakespeare-story as is seen in this blog-post https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt. In it Andrej Karpathy creates a 40 000 line story from different Shakespear's plays as a result of "The Unreasonable Effectiveness of Recurrent Neural Networks" (how ironic right?).
+In fact, the very source of the words and characters will be from a pseudo-shakespeare-story as is seen in this blog-post https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt. In it Andrej Karpathy creates a 40 000 line story from different Shakespear's plays as a result of "The Unreasonable Effectiveness of Recurrent Neural Networks".
 
-In effect, the random story that will be generated will be second-degree murder of the actual stories (sorry, not sorry).
+In effect, the random story that will be generated will be second-degree murder of the actual stories (sorry, not sorry). However, it is done to generate a sequence of words based on the history and may not very much coherent like a real story is. It simply highlights the use markov chains within javascript.
 
 # Okay, why are you doing this?
 
 Uhmm... Coz I wasn't loved as a child. (Just kidding!)
 
-I'm currently upskilling my web dev skills and I think I have the fundamentals figured out and so I want to prove that to myself. 
+I'm currently upskilling my web dev skills and I think I have the fundamentals figured out and so I want to prove that to myself.
 
 Additionally, coming from a data analytics background I think it'll be cool to show you guys that I have other skills sometimes (wink wink).
 
 # Wow dude, you're so amazing! What inspired you?
 
-I don't like to toot my own horn but I know I'm the best :)
-
-(Takes a Zoolander serious face pose): I was inspired by the challenge on https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Silly_story_generator#starting_point as I kept learning about Javascript and I thought "Wait a minute. I also recall using Markov Chains to create predictions in my other life, so why not use that to generate the stories of the great Shakespeare."
+I was inspired by the challenge on https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Silly_story_generator#starting_point as I kept learning about javascript and I thought "Wait a minute. I also recall using Markov Chains to create predictions in my other life, so why not use that to generate the stories of the great Shakespeare."
 
 At that point I came across Pushpendra Singh's similar Markov Chain's project found here https://medium.com/@pushpendrasinghcod/text-generation-from-shakespeare-play-using-markov-chains-eee5bfcbb7a0, and then I knew that this has to be done. My hands are tied now, so here we go!
 
@@ -46,7 +44,7 @@ Without these the project is almost impossible to start or to do when one meets 
 
 1. Markov Chain Knowledge:
 
-At a high leve, this skill is set out to find a transition matrix which determines probabilities of moving from one speaker to another and for each speaker this requirement determines probabilities to move from one to another - all based on the source story.
+At a high level, this algorithm's aim is to find a transition matrix which determines probabilities of moving from one speaker to another - all based on the source story.
 
 2. Python:
 
@@ -54,7 +52,7 @@ To do data extraction and manipulation of the story in such a way that one is ab
 
 3. HTML, CSS and Javascript:
 
-The final website will certainly need structure and some styling so mere humans like myself can see clearly where the button(s) to generate the story is and html, css and javascript are here for that.
+The final website will certainly need structure and some styling so mere humans like myself can see clearly where the button to generate the story is and html, css and javascript are here for that.
 
 4. Git and Github:
 
@@ -62,11 +60,11 @@ These are probably the best places to store every instance of progress made on t
 
 ## A final note on skills
 
-The lists above are exhaustive and even within each of them there's other layers like data analytics within python and creation of functions and events within javascript. However, the skills highlighted show the high level knowledge and attributes that will have one at the least start with the project.
+The lists above are not exhaustive and even within each of them there's other layers like data analytics within python and creation of functions and events within javascript. However, the skills highlighted show the high level knowledge and attributes that will have one at the least start with the project.
 
 # Project roadmap please
 
-This project has five main phases:
+This project has four main phases:
 
 1. Extract the speakers and their relevant speeches from the story.
 
@@ -75,8 +73,6 @@ This project has five main phases:
 3. Create an html webpage for generating a story at a click of a button (or buttons).
 
 4. Use results of transition matrices in an algorithm that generates random stories.
-
-5. Put it all together and test and update as needed.
 
 # Summarizing the phases of the project
 
@@ -95,7 +91,7 @@ Yes I know this isn't a tool itself but it's one of those important components f
 - In my project's folder, I simply booted up the terminal and used this command: python3 -m venv venv
 and it was created.
 
-3. Jupyter lab:
+3. Jupyter lab/Notebook:
 
 Like I said before. I come from a very analytics-facing background and our main aim there was to get results to our stakeholders and bosses as quickly as possible so we let the developers take care of the other techy stuff most often. Therefore, I opted for Jupyter lab because it really does fit the purpose in data analytics more than in development. Besides, ever since I was introduced to python it's been my go to IDE, and so I've grown fond of it.
 
@@ -204,7 +200,11 @@ The algorithm in this stage uses the transition matrix speaker_transition_matrix
 
 By using a random number between 1 and 5 to pick out the first speaker in the list of the speakers (where First Citizen correlates with 1, All correlates with 2, Second Citizen correlates with 3, Menenius correlates with 4, Marcius correlates with 5) we determine the probabilities to move to the next speaker and then pick the speaker with the highest probability as the next speaker in the same way as the example above. Thereafter we repeat the process while ensuring that we don't pick anyone who was picked before - we do this until we've exhausted the list.
 
+### Phase 4 Stage 2: Generating the speech of each speaker
 
+In this phase we use python to to store three final files per speaker. The first file is the transition matrix for the words of each speaker, then we store the list of unique words by each speaker throughout the story, then the final file is a count of each speaker's individual speech's count - i.e. if person 1 had their second speech in the story being them saying "Yes sir" then in the list for person 1's word count (item 2) the word count would be 2.
+
+We use the list of the count of words to randomly pick out an item therein to determine each speaker's speech length so that every time the button to generate a story is clicked the speaker has a different length speech. Then we apply the markov chain process using the transition matrix and the list of words spoken by the speaker in a similar way we did in phase 4 stage 2.
 
 
 
